@@ -750,6 +750,54 @@ header{position:static}
   .pv-inview{opacity:1;transform:none}
 }
 
+/* ---------------- methods & provenance card ---------------- */
+.mth-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px}
+@media(max-width:860px){.mth-grid{grid-template-columns:1fr}}
+.mth-tabs{display:flex;gap:5px;padding:10px 14px 0;flex-wrap:wrap}
+.mth-tabs button{background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:5px 11px;font-size:11px;
+  font-family:var(--mono);letter-spacing:.04em;color:var(--ink2);transition:.18s}
+.mth-tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.mth-pane{display:none}
+.mth-pane.on{display:block}
+.mth-h{font-size:12px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+.mth-h .mth-pill{font-family:var(--mono);font-size:8.5px;letter-spacing:.05em;border-radius:99px;padding:2px 7px;font-weight:500}
+.mth-pill.real{background:var(--oksoft);border:1px solid #CFE6DB;color:var(--ok)}
+.mth-pill.model{background:var(--infosoft);border:1px solid #D8E5F1;color:var(--info)}
+.mth-pill.illus{background:var(--warnsoft);border:1px solid #EFE0C4;color:var(--warn)}
+.mth-p{font-size:12px;color:var(--ink2);line-height:1.6;margin:0 0 12px}
+.mth-eq{font-family:var(--mono);font-size:10.5px;background:var(--sunk);border:1px solid var(--line);border-radius:8px;
+  padding:9px 11px;color:var(--ink2);line-height:1.75;overflow-x:auto;white-space:pre;margin-bottom:12px}
+.mth-eq b{color:var(--brand)}
+
+/* animated method pipeline */
+.mth-pipe{width:100%;height:auto;display:block;margin-bottom:12px}
+.mth-pipe .pbox{fill:rgba(255,255,255,.9);stroke:var(--line2);stroke-width:1}
+.mth-pipe .pbox.eng{fill:var(--brand);stroke:var(--brand)}
+.mth-pipe .plbl{font-family:var(--mono);font-size:7.5px;fill:var(--ink2);letter-spacing:.04em}
+.mth-pipe .plbl.w{fill:#fff}
+.mth-pipe .pline{stroke:var(--line2);stroke-width:1.2;fill:none}
+.mth-pipe .pflow{stroke:var(--brand);stroke-width:1.8;fill:none;stroke-linecap:round;
+  stroke-dasharray:5 105;animation:mthFlow 3s linear infinite}
+@keyframes mthFlow{to{stroke-dashoffset:-110}}
+
+/* live monte-carlo histogram */
+.mc-wrap{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:11px}
+.mc-head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:.05em;margin-bottom:7px}
+.mc-head .mc-n{margin-left:auto;color:var(--ink2)}
+#mcCanvas{width:100%;height:118px;display:block}
+.mc-key{display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--ink3);flex-wrap:wrap}
+.mc-key i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.mc-stat{display:flex;gap:14px;margin-top:9px;flex-wrap:wrap}
+.mc-stat div{font-size:11px;color:var(--ink2)}
+.mc-stat b{display:block;font-family:var(--mono);font-size:15px;color:var(--ink)}
+.mc-stat .up b{color:var(--ok)}
+
+.mth-src{font-size:11.5px;color:var(--ink2);line-height:1.65}
+.mth-src a{color:var(--brand)}
+.mth-src .s-row{padding:8px 0;border-bottom:1px solid var(--line)}
+.mth-src .s-row:last-child{border-bottom:0}
+.mth-src .s-row b{display:block;font-size:11.5px;color:var(--ink);margin-bottom:2px}
+
 .pv-recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:720px){.pv-recap-grid{grid-template-columns:1fr}}
 .pv-recap-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px;box-shadow:var(--sh)}
@@ -896,6 +944,117 @@ header{position:static}
         <div class="krow"><span>Documents written</span><span id="cDocs">0</span></div>
         <div class="krow"><span>Collections</span><span id="cColl">cases · ambulances · hospitals · events</span></div>
         <div class="note">No credentials are used. <code>CloudAdapter</code> writes to an in-memory store mirrored to <code>localStorage</code>, so the event trail survives a page reload exactly as a real backend would.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card" id="methodsCard" style="margin-top:13px">
+    <div class="ch"><h4>How this is computed</h4><span class="sub">The algorithms, the simulations and where the data comes from</span><span class="rt" id="mthTag">METHODS</span></div>
+    <div class="mth-tabs" id="mthTabs">
+      <button data-p="mthAlgo" class="on">SCORING ALGORITHM</button>
+      <button data-p="mthSim">SIMULATIONS</button>
+      <button data-p="mthData">DATA PROVENANCE</button>
+    </div>
+
+    <div class="mth-pane on" id="mthAlgo">
+      <div class="mth-grid">
+        <div>
+          <div class="mth-h">Destination scoring <span class="mth-pill model">DETERMINISTIC</span></div>
+          <p class="mth-p">Every candidate hospital is scored out of 100 on six weighted factors the moment a case opens, and re-scored whenever live capacity changes. Nothing here is random — the same inputs always produce the same ranking, which is what makes a routing decision auditable.</p>
+          <div class="mth-eq">clin  <b>30</b>  speciality matches the patient's need
+bed   <b>25</b>  ICU/general beds actually free right now
+eta   <b>20</b>  clamp(20 − (minutes − 5) × 1.05, 4, 20)
+load  <b>10</b>  (1 − ED load) × 10
+conf  <b>10</b>  feed freshness × 10
+ins    <b>5</b>  in-network — neutralised when severity = Critical
+      ───
+total <b>100</b>  → highest score wins the reservation</div>
+          <p class="mth-p">Three rules override the arithmetic. A hospital reporting <b>zero</b> of the required bed type is struck out as infeasible regardless of score. A missing capacity feed scores a cautious <b>8/25</b> rather than being trusted or discarded outright. And when severity is <b>Critical</b>, network compatibility is scored equally for every candidate — so insurance can never decide where a life-threatening case is sent, only where a stable transfer goes.</p>
+        </div>
+        <div>
+          <div class="mth-h">Why weights, not distance <span class="mth-pill illus">DESIGN CHOICE</span></div>
+          <p class="mth-p">Nearest-first routing optimises a single variable that the ambulance can already see. The weighting exists so that clinical capability (30) plus real bed availability (25) together outweigh travel time (20) — a hospital 6 minutes further away wins if it can actually treat the patient on arrival.</p>
+          <svg class="mth-pipe" viewBox="0 0 320 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect class="pbox" x="4" y="8" width="86" height="20" rx="5"/><text class="plbl" x="47" y="22" text-anchor="middle">CASE OPENED</text>
+            <rect class="pbox" x="4" y="36" width="86" height="20" rx="5"/><text class="plbl" x="47" y="50" text-anchor="middle">LIVE CAPACITY</text>
+            <rect class="pbox" x="4" y="64" width="86" height="20" rx="5"/><text class="plbl" x="47" y="78" text-anchor="middle">ETA / TRAFFIC</text>
+            <rect class="pbox" x="4" y="92" width="86" height="20" rx="5"/><text class="plbl" x="47" y="106" text-anchor="middle">INSURANCE</text>
+            <path class="pline" d="M90 18 H126 Q134 18 134 26 V56"/><path class="pline" d="M90 46 H126 Q134 46 134 54 V58"/>
+            <path class="pline" d="M90 74 H126 Q134 74 134 66 V62"/><path class="pline" d="M90 102 H126 Q134 102 134 94 V64"/>
+            <path class="pflow" d="M90 18 H126 Q134 18 134 26 V60"/>
+            <path class="pflow" d="M90 102 H126 Q134 102 134 94 V60" style="animation-delay:1.1s"/>
+            <rect class="pbox eng" x="138" y="46" width="78" height="30" rx="6"/>
+            <text class="plbl w" x="177" y="58" text-anchor="middle">WEIGHTED</text><text class="plbl w" x="177" y="69" text-anchor="middle">SCORE /100</text>
+            <path class="pline" d="M216 61 H244"/><path class="pflow" d="M216 61 H248" style="animation-delay:.5s"/>
+            <rect class="pbox" x="248" y="38" width="68" height="20" rx="5"/><text class="plbl" x="282" y="52" text-anchor="middle">RESERVE BED</text>
+            <rect class="pbox" x="248" y="64" width="68" height="20" rx="5"/><text class="plbl" x="282" y="78" text-anchor="middle">RE-RANK</text>
+          </svg>
+          <p class="mth-p" style="margin:0">The loop on the right is the part that matters: a reservation is not final. Any change in live capacity re-enters the same scoring function, and if the ranking flips the ambulance is rerouted mid-journey.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mth-pane" id="mthSim">
+      <div class="mth-grid">
+        <div>
+          <div class="mth-h">Three different simulations, three different jobs</div>
+          <p class="mth-p"><b>1 · Live case</b> <span class="mth-pill illus">SCRIPTED</span><br>A discrete-event timeline. Each scenario (S1–S8) is a fixed script of timed events — a decline at t+86s, a bed lost at t+180s — so a specific failure mode can be demonstrated on demand. The routing response to those events is <i>not</i> scripted: it is the live scoring function reacting.</p>
+          <p class="mth-p"><b>2 · Side-by-side</b> <span class="mth-pill model">CONTROLLED</span><br>The same emergency is run twice against two policies — nearest-first versus capability-aware — holding the patient, hospitals and road conditions identical. It isolates the effect of the coordination layer alone.</p>
+          <p class="mth-p" style="margin:0"><b>3 · National model</b> <span class="mth-pill model">MONTE CARLO</span><br>Per state, N synthetic emergencies are drawn from normal distributions (Box–Muller), each timed end to end under both policies. Outputs are proportions, not individual predictions.</p>
+        </div>
+        <div>
+          <div class="mth-h">The national model, per simulated case</div>
+          <div class="mth-eq">notify ~ N(10, 5)            clamp 1–60 min
+resp   ~ N(18, 8) × rural × traffic   clamp 4–90
+travel ~ N(14, 6) × traffic × rural   clamp 4–90
+
+refusal probability
+  p = clamp((0.62 − 0.40 × beds/1000) × occ, 0.06, 0.62)
+
+<b>nearest-first</b>  t = notify + resp + 5 + travel
+             + p → (11 + 0.75 × travel)   [divert]
+             + 18                          [handover]
+<b>with SETU</b>      t = notify + resp + 6 + 1.06 × travel + 4
+             (bed reserved before arrival)
+
+golden hour = t ≤ 60 min
+lives = state deaths × Δ(golden hour) × elasticity</div>
+          <div class="mc-wrap">
+            <div class="mc-head"><span>LIVE DRAW · ARRIVAL TIME DISTRIBUTION</span><span class="mc-n" id="mcN">0 cases</span></div>
+            <canvas id="mcCanvas"></canvas>
+            <div class="mc-key">
+              <span><i style="background:#B98A6A"></i>Nearest-first</span>
+              <span><i style="background:#7A2038"></i>With SETU</span>
+              <span><i style="background:#3E7A5D"></i>60-min golden hour</span>
+            </div>
+            <div class="mc-stat">
+              <div>Within golden hour, nearest-first<b id="mcA">—</b></div>
+              <div class="up">Within golden hour, with SETU<b id="mcB">—</b></div>
+            </div>
+          </div>
+          <p class="mth-p" style="margin:9px 0 0;font-size:11px">This histogram draws from the same distributions the national tab uses, live, so you can watch the two arrival-time curves separate. The nearest-first curve settles near the ~20% golden-hour rate reported in the literature, which is the calibration check. Note it assumes <b>every</b> case is SETU-covered, so the gap here is the ceiling — the national tab applies the coverage slider and lands lower.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mth-pane" id="mthData">
+      <div class="mth-grid">
+        <div>
+          <div class="mth-h">What is real <span class="mth-pill real">PUBLISHED DATA</span></div>
+          <div class="mth-src">
+            <div class="s-row"><b>Crash and fatality counts, per state</b>Ministry of Road Transport &amp; Highways, <i>Road Accidents in India 2023</i>. National totals 4,80,583 crashes and 1,72,890 deaths; every state and UT row carries its own published figures. <a href="https://morth.nic.in/road-accident-in-india" target="_blank" rel="noopener">morth.nic.in</a></div>
+            <div class="s-row"><b>Government beds per 1,000</b>National Health Profile / CBHI. National figure 0.79 against the National Health Policy 2017 target of 2.0. Twelve states use their published figure; the remainder are marked <i>est</i> and carry the national average.</div>
+            <div class="s-row"><b>Golden-hour baseline</b>20.6% of road-accident victims reached a facility within the golden hour (Bharati Vidyapeeth Medical College, Sangli; <i>Cureus</i>, 2025). The model is calibrated against this. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11896012/" target="_blank" rel="noopener">study</a></div>
+            <div class="s-row"><b>Preventability</b>Clinical literature holds definitive care inside 60 minutes can cut trauma deaths by up to 50%. The model's default elasticity is 30% — deliberately below the upper estimate.</div>
+          </div>
+        </div>
+        <div>
+          <div class="mth-h">What is modelled <span class="mth-pill model">DERIVED</span></div>
+          <p class="mth-p">Travel, response and notification times; refusal probability as a function of bed density; golden-hour rates under each policy; deaths averted. These are <b>projections produced by the assumptions above</b>, adjustable by the sliders on the national tab — not measured outcomes, and not a forecast.</p>
+          <div class="mth-h">What is illustrative <span class="mth-pill illus">SYNTHETIC</span></div>
+          <p class="mth-p">Every patient, hospital, operator, phone number, insurance policy and district road layout in the live console is invented for demonstration. Hospital capacity feeds, the cloud adapter and the event store are mocks — no real facility is represented and no credentials are used.</p>
+          <div class="mth-h">Known limits <span class="mth-pill illus">HONEST CAVEATS</span></div>
+          <p class="mth-p" style="margin:0">The model claims no benefit on the crash-to-call leg, which is where a large share of deaths occur. It assumes capacity data can be made available in near-real time, which is the central adoption risk. State-level averages hide district variation. Elasticity between arrival time and survival is the single most sensitive assumption in the whole model — which is why it is exposed as a slider rather than fixed.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1304,10 +1463,14 @@ function scoreOne(h){
   const eta=clamp(Math.round(20-(e-5)*1.05),4,20);
   const load=Math.round(clamp((1-h.load)*10,1,10));
   const inNet=h.net.includes(S.pt.ins.split(' ')[0])||h.net.some(n=>S.pt.ins.startsWith(n));
-  const ins=inNet?5:1;
+  /* Policy guard: for life-threatening cases clinical urgency overrides network status, so network
+     compatibility is neutralised across all candidates and cannot decide the destination. It still
+     ranks for stable/high transfers. This mirrors the rule stated in the out-of-network scenario. */
+  const critical=S.pt.sev==='Critical';
+  const ins=critical?5:(inNet?5:1);
   const conf=Math.round(h.conf*10);
   const total=clin+bed+eta+load+ins+conf;
-  return {h,eta:e,km:distKm(from,h),clin,bed,etaS:eta,load,ins,conf,inNet,total,feasible:beds!==0};
+  return {h,eta:e,km:distKm(from,h),clin,bed,etaS:eta,load,ins,conf,inNet,insNeutral:critical,total,feasible:beds!==0};
 }
 function rankAll(){
   S.ranked=S.H.filter(h=>h.status!=='declined').map(scoreOne).sort((a,b)=>b.total-a.total||a.eta-b.eta);
@@ -1395,12 +1558,17 @@ function decide(){
   rankAll();
   const best=S.ranked.find(r=>r.feasible)||S.ranked[0];
   S.score=best;
+  const nearer=S.ranked.filter(r=>r.feasible&&r.eta<best.eta).sort((a,b)=>a.eta-b.eta)[0];
   S.trans=[
     {u:'TRIGGER',b:'New emergency case '+S.case.id,p:'ERSS-112 intake, '+S.pt.pres+', severity '+S.pt.sev,hot:true},
-    {u:'RULE',b:'Required '+S.pt.bed+' bed + '+S.pt.spec+' capability',p:'Candidates scored on the six weighted factors'},
-    {u:'RESULT',b:best.h.name+' scores '+best.total+'/100',p:'Next best: '+(S.ranked[1]?S.ranked[1].h.name+' at '+S.ranked[1].total:'—')},
-    {u:'SYSTEM ACTION',b:'Provisional hold + POC contact',p:'Bed held for the ETA window, operator notified, vitals link opened'}
+    {u:'RULE',b:'Required '+S.pt.bed+' bed + '+S.pt.spec+' capability',p:'Candidates scored on the six weighted factors'}
   ];
+  if(S.pt.sev==='Critical')S.trans.push({u:'POLICY GUARD',b:'Network compatibility neutralised',
+    p:'Severity is Critical — insurance network scores equally for every candidate and cannot decide the destination'});
+  S.trans.push({u:'RESULT',b:best.h.name+' scores '+best.total+'/100',p:'Next best: '+(S.ranked[1]?S.ranked[1].h.name+' at '+S.ranked[1].total:'—')});
+  if(nearer)S.trans.push({u:'NOT THE NEAREST',b:nearer.h.name+' is '+(best.eta-nearer.eta)+' min closer',
+    p:'Passed over on clinical fit: '+nearer.clin+'/30 speciality and '+nearer.bed+'/25 capacity, against '+best.clin+'/30 and '+best.bed+'/25 at '+best.h.name});
+  S.trans.push({u:'SYSTEM ACTION',b:'Provisional hold + POC contact',p:'Bed held for the ETA window, operator notified, vitals link opened'});
   setDest(best.h.id,null,'initial_selection');
   CloudAdapter.writeEvent('routing.decision.completed',{caseId:S.case.id,selected:best.h.id,score:best.total,candidates:S.ranked.length});
   dq('ROUTE CONSISTENCY','PASS');dq('BED CONSISTENCY','PASS');dq('AUDIT TRAIL','PASS');
@@ -1486,14 +1654,33 @@ function applyStep(s){
     case 'tie': {
       const [x,y]=S.ranked;
       if(!x||!y)break;
-      S.trans=[
-        {u:'TIE DETECTED',b:x.h.name+' and '+y.h.name+' — '+x.total+' vs '+y.total,p:'Clinical suitability and bed availability are effectively equal',hot:true},
-        {u:'TIE-BREAK 1 · CLINICAL',b:'No separation',p:'Both hold '+S.pt.spec.toLowerCase()+' capability and a free '+S.pt.bed+' bed'},
-        {u:'TIE-BREAK 2 · TRAVEL TIME',b:x.h.name+' '+x.eta+' min vs '+y.h.name+' '+y.eta+' min',p:'Golden-hour rule: the shorter transit wins where clinical capability is equal'},
-        {u:'TIE-BREAK 3 · INSURANCE',b:(x.inNet?x.h.name+' is in-network':'neither is in-network'),p:'Applied only after clinical safety, never before it'},
-        {u:'RESOLUTION',b:x.h.name+' selected',p:'Decided on travel time; the rule that fired is recorded in the audit trail',hot:true}
+      /* Work out which factor actually created the separation, rather than asserting one. */
+      const FACTORS=[['CLINICAL','clin','speciality match'],['BED','bed','free '+S.pt.bed+' capacity'],
+        ['TRAVEL TIME','etaS','transit time'],['ED LOAD','load','department load'],
+        ['INSURANCE','ins','network compatibility'],['DATA CONFIDENCE','conf','feed reliability']];
+      const diffs=FACTORS.map(([label,key,desc])=>({label,key,desc,d:x[key]-y[key]}))
+                         .filter(f=>f.d!==0).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
+      const decider=diffs[0];
+      const equal=FACTORS.filter(([,key])=>x[key]===y[key]).map(([label])=>label.toLowerCase());
+      const rows=[
+        {u:'TIE DETECTED',b:x.h.name+' and '+y.h.name+' — '+x.total+' vs '+y.total,
+         p:'Separated by '+Math.abs(x.total-y.total)+' point'+(Math.abs(x.total-y.total)===1?'':'s')+' out of 100',hot:true}
       ];
-      CloudAdapter.writeEvent('routing.tiebreak.applied',{caseId:S.case.id,a:x.h.id,b:y.h.id,rule:'TRAVEL_TIME'});
+      if(equal.length)rows.push({u:'NO SEPARATION ON',b:equal.join(', '),p:'These factors scored identically for both hospitals'});
+      if(decider){
+        rows.push({u:'DECIDED BY · '+decider.label,
+          b:(decider.d>0?x.h.name:y.h.name)+' leads on '+decider.desc+' by '+Math.abs(decider.d)+' point'+(Math.abs(decider.d)===1?'':'s'),
+          p:'This is the largest single difference between the two candidates'});
+      }
+      if(S.pt.sev==='Critical'){
+        rows.push({u:'POLICY GUARD',b:'Network compatibility neutralised',
+          p:'Severity is Critical, so insurance network cannot decide the destination — clinical urgency overrides network status'});
+      }
+      rows.push({u:'RESOLUTION',b:x.h.name+' selected — '+x.eta+' min',
+        p:'Runner-up '+y.h.name+' at '+y.eta+' min. The rule that fired is recorded in the audit trail',hot:true});
+      S.trans=rows;
+      CloudAdapter.writeEvent('routing.tiebreak.applied',{caseId:S.case.id,a:x.h.id,b:y.h.id,
+        rule:decider?decider.label.replace(/ /g,'_'):'EQUAL_SCORES',margin:x.total-y.total});
       break;}
     case 'policy': {
       const near=S.ranked.slice().sort((p,q)=>p.eta-q.eta)[0];
@@ -1776,12 +1963,16 @@ function runState(s,sc,P){
   for(let i=0;i<P.n;i++){
     const notify=clamp(rnorm(10,5),1,60), resp=clamp(rnorm(18,8)*rural*sc.traffic,4,90),
           travel=clamp(rnorm(14,6)*sc.traffic*rural,4,90);
+    /* Common random numbers: both arms must see the SAME refusal draw, otherwise the two arms
+       diverge on noise alone and an uncovered case can look better or worse than itself.
+       With this shared draw, 0% coverage yields exactly zero gain, as it must. */
+    const refRoll=Math.random();
     let t=notify+resp+5+travel;
-    if(Math.random()<pRef){ref++;t+=11+travel*.75;}
+    if(refRoll<pRef){ref++;t+=11+travel*.75;}
     t+=18;bT+=t;if(t<=60)bGH++;
     let t2;
     if(Math.random()<P.cov)t2=notify+resp+6+travel*1.06+4;
-    else{t2=notify+resp+5+travel;if(Math.random()<pRef)t2+=11+travel*.75;t2+=18;}
+    else{t2=notify+resp+5+travel;if(refRoll<pRef)t2+=11+travel*.75;t2+=18;}
     sT+=t2;if(t2<=60)sGH++;
   }
   const ghA=bGH/P.n,ghB=sGH/P.n;
@@ -2421,6 +2612,7 @@ const CMP_HOSP=[
 ];
 
 let cmpCur='trauma', cmpRunning=false, cmpTimers=[];
+window.__SETU_CMP=()=>CMP_SCENARIOS;
 
 function cmpDrawMap(svgId,hl,route){
   const svg=$('#'+svgId);svg.innerHTML='';
@@ -2460,9 +2652,17 @@ function cmpTypeLog(logId,time,msg,cls,delay){
     go();},delay);cmpTimers.push(tid);});
 }
 
-function cmpRenderTl(tlId,phases,anim){const bar=$('#'+tlId);bar.innerHTML='';let left=0;
-  phases.forEach((p,i)=>{const s=document.createElement('div');s.className='stl-seg '+p.cls;s.style.left=left+'%';s.style.width=anim?'0%':p.w+'%';s.textContent=p.l;bar.appendChild(s);
-    if(anim){const t=setTimeout(()=>{s.style.width=p.w+'%';},200+i*350);cmpTimers.push(t);}left+=p.w;});}
+function cmpRenderTl(tlId,phases,anim,scale){
+  const bar=$('#'+tlId);bar.innerHTML='';let left=0;
+  /* Normalise each phase set to 100, then scale the whole bar by this journey's share of the
+     slower journey — so a 28-minute bar is visibly shorter than a 54-minute one instead of both
+     rendering full width. Without this the two panels look equally long, which hides the result. */
+  const sum=phases.reduce((a,p)=>a+p.w,0)||100;
+  const k=(scale||1)*100/sum;
+  phases.forEach((p,i)=>{const w=p.w*k;
+    const s=document.createElement('div');s.className='stl-seg '+p.cls;s.style.left=left+'%';
+    s.style.width=anim?'0%':w+'%';s.textContent=p.l;bar.appendChild(s);
+    if(anim){const t=setTimeout(()=>{s.style.width=w+'%';},200+i*350);cmpTimers.push(t);}left+=w;});}
 
 function cmpRenderChips(id,chips,delay){const box=$('#'+id);box.innerHTML='';
   chips.forEach((ch,i)=>{const t=setTimeout(()=>{const s=document.createElement('span');s.className='schip '+ch.c;s.textContent=ch.t;s.style.opacity='0';s.style.animation='sevFade .3s forwards';box.appendChild(s);},delay+i*180);cmpTimers.push(t);});}
@@ -2498,11 +2698,11 @@ $('#cmpRun').onclick=function(){
   const sFin=se.totalTime*MS+700;
   cmpTimers.push(setTimeout(()=>{$('#sTimeSetu').textContent=se.totalTime;$('#sEvTagSetu').textContent='COMPLETE';
     $('#sKdSetu').textContent=se.dispatch;$('#sKaSetu').textContent=se.totalTime+'m';$('#sKvSetu').textContent=se.diversions;$('#sKbSetu').textContent=se.bedLocked;
-    cmpRenderTl('sTlSetu',se.phases,true);cmpRenderChips('sChipsSetu',se.chips,150);},sFin));
+    cmpRenderTl('sTlSetu',se.phases,true,se.totalTime/maxT);cmpRenderChips('sChipsSetu',se.chips,150);},sFin));
   const nFin=no.totalTime*MS+700;
   cmpTimers.push(setTimeout(()=>{$('#sTimeNoSetu').textContent=no.totalTime;$('#sEvTagNoSetu').textContent='COMPLETE';
     $('#sKdNoSetu').textContent=no.dispatch;$('#sKaNoSetu').textContent=no.totalTime+'m';$('#sKvNoSetu').textContent=no.diversions;$('#sKbNoSetu').textContent=no.bedLocked;
-    cmpRenderTl('sTlNoSetu',no.phases,true);cmpRenderChips('sChipsNoSetu',no.chips,150);},nFin));
+    cmpRenderTl('sTlNoSetu',no.phases,true,no.totalTime/maxT);cmpRenderChips('sChipsNoSetu',no.chips,150);},nFin));
   const endD=Math.max(sFin,nFin)+1000;
   cmpTimers.push(setTimeout(()=>{const saved=no.totalTime-se.totalTime,pct=Math.round(saved/no.totalTime*100);
     $('#sSavedSetu').textContent='▲ '+saved+' min faster';$('#sLostNoSetu').textContent='▼ '+saved+' min lost';
@@ -2627,6 +2827,9 @@ renderBarriers();
 window.__SETU_getState=()=>S;
 window.__SETU_getHospRows=()=>S.H.map(h=>{const r=scoreOne(h);r.h=h;return r;});
 window.__SETU_WEIGHTS=WEIGHTS;
+window.__SETU_runState=(s,sc,P)=>runState(s,sc,P);
+window.__SETU_ND=()=>ND;
+window.__SETU_NSC=()=>NSC;
 
 })();
 </script>
@@ -2819,6 +3022,7 @@ const TIPS={
   'System integrity & data quality':'This demonstrates how a digital system handles missing, stale or unreliable data.',
   'Cloud adapter':'This is a prototype representation of the backend integration layer.',
   'National rollout model':'This turns a local process improvement into a system-scale model.',
+  'How this is computed':'The scoring maths, the three simulation types, and exactly which numbers are real published data versus modelled output.',
   'Why the system chose this hospital':'The scoring breakdown behind the routing decision — clinical fit, capacity, ETA, load, insurance and data confidence.',
   'Run the model':'Set the assumptions and run the national simulation using the same routing logic as one case.',
   'National result':'The modelled outcome once the simulation finishes — states, cases and lives affected.'
@@ -2885,6 +3089,106 @@ $('#pvTeacherToSim').onclick=()=>{closeOverlay('pvTeacherModal');clickTab('vOps'
   });
   if(html){const cur=sel.value;sel.innerHTML=html;sel.value=cur;}
 })();
+
+/* ---------------- METHODS CARD — pane switching + live Monte Carlo demo ---------------- */
+(function methodsCard(){
+  const tabs=$('#mthTabs');if(!tabs)return;
+  tabs.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    $$('#mthTabs button').forEach(x=>x.classList.toggle('on',x===b));
+    $$('#methodsCard .mth-pane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.p));
+    if(b.dataset.p==='mthSim')startMC();else stopMC();
+  });
+
+  /* --- the same draw the national model uses, shown as a building histogram --- */
+  const cvs=$('#mcCanvas');
+  let ctx=null;try{ctx=cvs&&cvs.getContext('2d');}catch(_){ctx=null;}
+  if(!ctx)return;
+
+  const BINS=34, MAXT=110, BW=MAXT/BINS;
+  let A=new Array(BINS).fill(0),B=new Array(BINS).fill(0),nA=0,nB=0,ghA=0,ghB=0,raf=null,live=false;
+
+  const rnorm=(m,s)=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();
+    return m+s*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+  const clampv=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+  function drawOne(){
+    /* ordinary-weekday factors, national average bed density — same shape as runState() */
+    const traffic=1,rural=1,occ=1,bed=0.79;
+    const pRef=clampv((0.62-0.40*bed)*occ,0.06,0.62);
+    const notify=clampv(rnorm(10,5),1,60),
+          resp=clampv(rnorm(18,8)*rural*traffic,4,90),
+          travel=clampv(rnorm(14,6)*traffic*rural,4,90);
+    let t=notify+resp+5+travel;
+    if(Math.random()<pRef)t+=11+travel*0.75;
+    t+=18;
+    let t2=notify+resp+6+travel*1.06+4;
+    return [t,t2];
+  }
+  function bin(arr,t){const i=Math.min(BINS-1,Math.floor(t/BW));arr[i]++;}
+
+  function render(){
+    const w=cvs.clientWidth||420,h=118,dpr=Math.min(window.devicePixelRatio||1,2);
+    if(cvs.width!==w*dpr||cvs.height!==h*dpr){cvs.width=w*dpr;cvs.height=h*dpr;}
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    const pad=4,bw=(w-pad*2)/BINS,base=h-14;
+    const mx=Math.max(1,...A,...B);
+
+    /* golden-hour cutoff */
+    const gx=pad+(60/MAXT)*(w-pad*2);
+    ctx.strokeStyle='#3E7A5D';ctx.setLineDash([3,3]);ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(gx,2);ctx.lineTo(gx,base);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#3E7A5D';ctx.font='8px ui-monospace,monospace';ctx.fillText('60 min',gx+3,9);
+
+    for(let i=0;i<BINS;i++){
+      const x=pad+i*bw;
+      const ha=(A[i]/mx)*(base-6),hb=(B[i]/mx)*(base-6);
+      ctx.fillStyle='rgba(185,138,106,.72)';
+      ctx.fillRect(x+1,base-ha,bw-2,ha);
+      ctx.fillStyle='rgba(122,32,56,.78)';
+      ctx.fillRect(x+1,base-hb,bw-2,hb);
+    }
+    ctx.strokeStyle='#E4E4DF';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad,base);ctx.lineTo(w-pad,base);ctx.stroke();
+    ctx.fillStyle='#8A8A80';ctx.font='8px ui-monospace,monospace';
+    ctx.fillText('0',pad,h-4);ctx.fillText('110 min',w-pad-34,h-4);
+  }
+
+  let acc=0;
+  function frame(){
+    if(!live)return;
+    for(let k=0;k<7;k++){
+      const [t,t2]=drawOne();
+      bin(A,t);bin(B,t2);nA++;nB++;
+      if(t<=60)ghA++;if(t2<=60)ghB++;
+    }
+    if(++acc%3===0){
+      render();
+      $('#mcN').textContent=nA.toLocaleString('en-IN')+' cases';
+      $('#mcA').textContent=Math.round(ghA/nA*100)+'%';
+      $('#mcB').textContent=Math.round(ghB/nB*100)+'%';
+    }
+    if(nA>=4000){   /* settle, then restart so it always looks alive */
+      setTimeout(()=>{A.fill(0);B.fill(0);nA=nB=ghA=ghB=0;},2600);
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  function startMC(){
+    if(live)return;live=true;
+    if(reduceMotion){                       /* draw a full sample once, no animation */
+      for(let k=0;k<4000;k++){const [t,t2]=drawOne();bin(A,t);bin(B,t2);nA++;nB++;if(t<=60)ghA++;if(t2<=60)ghB++;}
+      render();$('#mcN').textContent=nA.toLocaleString('en-IN')+' cases';
+      $('#mcA').textContent=Math.round(ghA/nA*100)+'%';$('#mcB').textContent=Math.round(ghB/nB*100)+'%';
+      live=false;return;
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  function stopMC(){live=false;if(raf)cancelAnimationFrame(raf);raf=null;}
+  window.addEventListener('resize',()=>{if(live)render();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMC();});
+})();
+
 
 /* ---------------- LIVING BACKGROUND (Magic UI: Flickering Grid + Ripple; Aceternity: Background Beams) ---------------- */
 (function livingBackground(){
