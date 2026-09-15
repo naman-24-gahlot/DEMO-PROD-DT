@@ -147,6 +147,23 @@ tr.out td{color:var(--ink3)}
 .who .mt{font-family:var(--mono);font-size:9.5px;color:var(--ink3)}
 .bub{background:var(--card);border:1px solid var(--line);border-radius:4px 11px 11px 11px;padding:8px 11px;font-size:12.5px;margin-bottom:5px;max-width:92%;box-shadow:var(--sh)}
 .bub.bot{background:#F3F7FB;border-color:#DFE9F2}
+.who .av.crew{background:#6B5B7B}
+.bub.crew{background:#F5F2F7;border-color:#E4DCEA}
+.who .tplid{font-family:var(--mono);font-size:8px;letter-spacing:.04em;color:var(--info);background:#F3F7FB;
+  border:1px solid #DFE9F2;border-radius:99px;padding:1px 7px;margin-left:2px}
+/* paramedic intake panel */
+.crew-wrap{border-bottom:1px solid var(--line);background:var(--sunk)}
+.crew-wrap summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:9px 14px;
+  font-size:11.5px;font-weight:600;color:var(--ink2)}
+.crew-wrap summary::-webkit-details-marker{display:none}
+.crew-wrap summary:before{content:'▸';font-family:var(--mono);color:var(--ink3);transition:transform .18s}
+.crew-wrap[open] summary:before{transform:rotate(90deg)}
+.crew-wrap summary .rt{margin-left:auto}
+.crew-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:7px;padding:0 14px 10px}
+.cf-row{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 9px;min-width:0}
+.cf-row u{display:block;font-family:var(--mono);font-size:8px;color:var(--ink3);text-decoration:none;letter-spacing:.05em;margin-bottom:2px}
+.cf-row b{font-size:11.5px;font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crew-note{margin:0;padding:0 14px 11px;font-size:11px;color:var(--ink3);line-height:1.55}
 .bub .ts{font-family:var(--mono);font-size:9.5px;color:var(--ink3);margin-top:4px}
 .poc{display:flex;align-items:center;gap:9px;padding:9px 14px;background:var(--card);border-bottom:1px solid var(--line);font-size:12px}
 .poc .ph{font-family:var(--mono);font-size:11px;color:var(--ink2);margin-left:auto}
@@ -798,6 +815,33 @@ header{position:static}
 .mth-src .s-row:last-child{border-bottom:0}
 .mth-src .s-row b{display:block;font-size:11.5px;color:var(--ink);margin-bottom:2px}
 
+/* KPI + tech stack expandable cards */
+.kpicard{margin-top:13px;background:rgba(255,255,255,.80);backdrop-filter:blur(7px);
+  border:1px solid rgba(228,228,223,.85);border-radius:var(--r);box-shadow:var(--sh)}
+.kpicard summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px;padding:12px 15px;flex-wrap:wrap}
+.kpicard summary::-webkit-details-marker{display:none}
+.kpicard summary:before{content:'▸';font-family:var(--mono);color:var(--ink3);transition:transform .18s}
+.kpicard[open] summary:before{transform:rotate(90deg)}
+.kpicard summary b{font-size:13px}
+.kpicard summary .kpi-sub{font-size:11.5px;color:var(--ink3)}
+.kpicard summary .rt{margin-left:auto}
+.kpi-body{padding:0 15px 15px}
+.kpi-north{background:var(--brandsoft);border:1px solid #EBD9DD;border-radius:10px;padding:12px 14px;margin-bottom:13px}
+.kpi-north u{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;color:var(--brand);text-decoration:none;margin-bottom:4px}
+.kpi-north b{display:block;font-size:13.5px;margin-bottom:4px;line-height:1.4}
+.kpi-north span{font-size:11.5px;color:var(--ink2);line-height:1.6}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.kpi-tier{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.kpi-tier h5{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:var(--brand);margin-bottom:7px;font-weight:600}
+.kpi-tier h5 em{font-style:normal;color:var(--ink3);font-weight:400}
+.kpi-tier ul{margin:0;padding-left:15px;font-size:11.5px;color:var(--ink2);line-height:1.65}
+.kpi-tier li{margin-bottom:3px}
+.kpi-tier code{font-family:var(--mono);font-size:10.5px;background:var(--sunk);padding:1px 4px;border-radius:4px}
+.kpi-warn{margin:7px 0 0;font-size:10.5px;color:var(--ink3);line-height:1.55;border-left:2px solid var(--line2);padding-left:8px}
+.kpi-guard{margin-top:12px;background:var(--oksoft);border:1px solid #CFE6DB;border-radius:10px;padding:11px 14px}
+.kpi-guard u{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;color:var(--ok);text-decoration:none;margin-bottom:6px}
+.kpi-guard ul{margin:0;padding-left:15px;font-size:11.5px;color:var(--ink2);line-height:1.7}
+
 .pv-recap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:720px){.pv-recap-grid{grid-template-columns:1fr}}
 .pv-recap-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px;box-shadow:var(--sh)}
@@ -897,7 +941,14 @@ header{position:static}
 
     <div style="display:flex;flex-direction:column;gap:13px;min-width:0">
       <div class="card">
-        <div class="ch"><h4>Operator coordination</h4><span class="sub">Automated desk ↔ hospital point of contact</span><span class="rt" id="chatTag">—</span></div>
+        <div class="ch"><h4>Operator coordination</h4><span class="sub">Crew intake → templated desk message ↔ hospital point of contact</span><span class="rt" id="chatTag">—</span></div>
+        <details class="crew-wrap" id="crewWrap">
+          <summary>Paramedic intake — the fields every message is built from <span class="rt" id="crewTag">CAPTURING</span></summary>
+          <div id="crewFeed" class="crew-grid"></div>
+          <p class="crew-note">The coordination desk does not write free text and does not generate language. It selects a
+            fixed template and fills these fields from the crew's structured assessment. A human at the receiving hospital
+            confirms all capacity — the desk cannot commit a bed on its own.</p>
+        </details>
         <div class="poc" id="pocBar"><span class="nm">No active contact</span></div>
         <div id="chat"></div>
       </div>
@@ -1058,6 +1109,163 @@ lives = state deaths × Δ(golden hour) × elasticity</div>
       </div>
     </div>
   </div>
+  <details class="kpicard" id="kpiCard">
+    <summary><b>KPIs — how we would know this worked</b><span class="kpi-sub">Six tiers, with the guardrails that would tell us it is doing harm</span><span class="rt">MEASUREMENT PLAN</span></summary>
+    <div class="kpi-body">
+      <div class="kpi-north">
+        <u>NORTH STAR</u>
+        <b>% of emergencies reaching a <i>capability-matched</i> facility within 60 minutes</b>
+        <span>Baseline 20.6% (Cureus 2025). Capability-matched matters — arriving fast at a hospital that cannot treat you is not a success.</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-tier">
+          <h5>TIER 1 · OPERATIONAL <em>leading · measurable from week one</em></h5>
+          <ul>
+            <li><b>Call → destination confirmed</b> (min) — the coordination cost being attacked</li>
+            <li><b>Pre-arrival notification lead time</b> — minutes the hospital knew in advance; effectively zero today</li>
+            <li><b>Capacity reserved before arrival</b> (%)</li>
+            <li><b>Diversion rate</b> — % rerouted after first assignment</li>
+            <li><b>Secondary transfer rate &lt;24h</b> — the sharpest proxy for match quality</li>
+            <li><b>Capability match rate</b> — % arriving where the needed speciality exists</li>
+            <li><b>Ambulance offload / turnaround</b> — releases fleet capacity</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>TIER 2 · CLINICAL OUTCOME <em>lagging · 6–12 months</em></h5>
+          <ul>
+            <li>Golden-hour arrival rate</li>
+            <li>Time-to-definitive-intervention (door-to-needle, door-to-CT)</li>
+            <li>Case-fatality rate, severity-matched cohorts</li>
+          </ul>
+          <p class="kpi-warn">Mortality is measured last, not first. A single district is underpowered to show it and the result would be confounded.</p>
+        </div>
+        <div class="kpi-tier">
+          <h5>TIER 3 · NETWORK HEALTH</h5>
+          <ul>
+            <li>Facility coverage — % of district facilities on a live feed</li>
+            <li><b>Feed freshness</b> — % of capacity updates under 15 min old</li>
+            <li>Load distribution across facilities</li>
+          </ul>
+          <p class="kpi-warn">If feed freshness collapses, every metric above it becomes meaningless.</p>
+        </div>
+        <div class="kpi-tier">
+          <h5>TIER 4 · ADOPTION <em>sociotechnical</em></h5>
+          <ul>
+            <li>Active facility rate — % updating capacity daily</li>
+            <li><b>Operator override rate</b> — falling over time means trust is building; rising means the model is wrong</li>
+            <li>POC response latency</li>
+            <li>Time-to-first-value for a newly onboarded hospital</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>TIER 5 · COMMERCIAL</h5>
+          <ul>
+            <li>Cost per coordinated case</li>
+            <li>Pre-authorisation completed before arrival (%)</li>
+            <li>Admissions where a deposit was demanded (%)</li>
+            <li>District retention / renewal</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>TIER 6 · GOVERNANCE</h5>
+          <ul>
+            <li>% decisions with a complete, reconstructible audit trail</li>
+            <li>Consent capture rate (DPDP Act 2023)</li>
+            <li>Time to reconstruct any single routing decision</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kpi-guard">
+        <u>GUARDRAIL METRICS · designed to catch SETU causing harm</u>
+        <ul>
+          <li><b>Mean transport time must not increase.</b> Capability-matching sends some patients further — this is the check that it stays justified</li>
+          <li><b>Load concentration</b> at top-scoring hospitals — the best facility winning every time is a failure mode</li>
+          <li><b>Nearest-facility bypass rate</b> — every bypass should be clinically explainable</li>
+          <li><b>Equity split, rural vs urban</b> — benefit must not accrue only to well-connected facilities</li>
+          <li><b>Capacity under-reporting</b> — once reporting affects workload, reporting stops being neutral. This is the gaming risk</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <details class="kpicard" id="stackCard">
+    <summary><b>Infrastructure — what this runs on, and how it meets ERSS-112</b><span class="kpi-sub">Integration posture, stack, and the path from prototype to pilot</span><span class="rt">TECH STACK</span></summary>
+    <div class="kpi-body">
+      <div class="kpi-north" style="background:var(--infosoft);border-color:#D8E5F1">
+        <u>INTEGRATION POSTURE</u>
+        <b>SETU is an orchestration layer beside ERSS-112, never inside it.</b>
+        <span>ERSS-112 keeps call intake, caller identity, and vehicle dispatch authority. SETU receives a dispatched incident, decides the destination, reserves capacity and coordinates the receiving side — then writes the outcome back. If SETU goes down, 112 dispatch continues exactly as it does today. That fallback is the reason a state health department can say yes.</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-tier">
+          <h5>INTEGRATION WITH ERSS-112 / 108</h5>
+          <ul>
+            <li><b>Inbound:</b> incident created → SETU consumes a dispatch event (CAD push or polled REST)</li>
+            <li><b>Outbound:</b> destination, reservation ID and revised ETA written back to the CAD record</li>
+            <li><b>Contract:</b> read-mostly. SETU never cancels a dispatch or reassigns a vehicle — it recommends a destination and holds a bed</li>
+            <li><b>Degraded mode:</b> no SETU response within a timeout → dispatcher proceeds on existing protocol; the case is logged as uncoordinated</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>HOSPITAL CAPACITY INGESTION <em>the hard part</em></h5>
+          <ul>
+            <li><b>Tier A —</b> hospital already has an HMIS: nightly + event-driven API sync (FHIR <code>Location</code>/<code>Encounter</code>)</li>
+            <li><b>Tier B —</b> no HMIS: lightweight web/PWA bed board, one tap per ward per shift</li>
+            <li><b>Tier C —</b> no reliable terminal: SMS/IVR shortcode returning a bed count</li>
+          </ul>
+          <p class="kpi-warn">Tier C exists because Tier-2/3 and CHC facilities are the target. A design that only works with a full HMIS would miss the population this is for.</p>
+        </div>
+        <div class="kpi-tier">
+          <h5>ABDM ALIGNMENT</h5>
+          <ul>
+            <li>ABHA identity where available; the case never blocks on identity</li>
+            <li>HFR / HPR for facility and provider registries</li>
+            <li>FHIR R4 resources for clinical payloads</li>
+            <li>Consent Manager for record access; emergency access flagged and audited after the fact</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>APPLICATION STACK</h5>
+          <ul>
+            <li><b>Ingest / API:</b> REST + webhooks, API gateway with per-facility keys</li>
+            <li><b>Event backbone:</b> Kafka-style append-only log — the event store you see in this prototype</li>
+            <li><b>Decision service:</b> stateless scoring service, deterministic, versioned weights</li>
+            <li><b>Store:</b> PostgreSQL (state + reservations, with optimistic locking) + Redis (live capacity cache, short TTL)</li>
+            <li><b>Geo:</b> OSRM / Valhalla routing with live traffic where available</li>
+            <li><b>Messaging:</b> templated outbound only — push to bed board, SMS/IVR fallback</li>
+            <li><b>Clients:</b> dispatcher console, hospital bed board (PWA), crew tablet app</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>WHERE IT RUNS</h5>
+          <ul>
+            <li>MeitY-empanelled cloud, India region, state-owned tenancy (data residency)</li>
+            <li>District-level partitioning so one district's load or outage cannot affect another</li>
+            <li>Offline-tolerant crew client — queues the assessment and syncs on reconnect</li>
+            <li>Target: decision in under 2 s; the capacity cache is what makes that possible</li>
+          </ul>
+        </div>
+        <div class="kpi-tier">
+          <h5>WHAT IS <i>NOT</i> IN THE STACK</h5>
+          <ul>
+            <li><b>No LLM in the routing or messaging path.</b> The desk fills fixed templates from crew fields — auditable, testable, and it cannot invent a bed</li>
+            <li>No autonomous vehicle reassignment</li>
+            <li>No replacement of any hospital's HMIS or of ERSS-112 itself</li>
+          </ul>
+          <p class="kpi-warn">Machine learning has one honest future role — forecasting demand and refusal probability — and it would advise the weights, never write the message.</p>
+        </div>
+      </div>
+      <div class="kpi-guard" style="background:var(--warnsoft);border-color:#EFE0C4">
+        <u>PROTOTYPE vs PILOT · stated plainly</u>
+        <ul>
+          <li>This prototype is a single HTML file with every feed mocked client-side. The cloud adapter, event store and hospital APIs are faithful in <i>shape</i>, not in implementation</li>
+          <li>The pilot's critical path is not software — it is a data-sharing agreement with the district health authority and one integration per hospital</li>
+          <li>The binding adoption risk stays what it has always been: whether a ward clerk updates a bed count on a busy night</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
   <div class="demoflag">Prototype simulation — all patients, hospitals, operators, policies and phone numbers are synthetic.</div>
 </div>
 
@@ -1595,12 +1803,30 @@ function reroute(reason){
   dq('OPTIMISTIC LOCK','PASS');
   alertBar('Destination changed mid-route','Reservation at '+prev.name+' released. Crew and dispatcher notified. '+next.h.name+' is now holding the bed.',false);
 }
+/* Message templates. The desk does not generate free text — it fills a fixed template from the
+   paramedic's structured intake. TPL_ID appears on every outbound message so a reviewer can see
+   which template fired and audit it. */
+const MSG_TPL={
+  'Critical transfer request':'TR-01 · CRITICAL TRANSFER REQUEST',
+  'Stable transfer request':'TR-02 · STABLE TRANSFER REQUEST',
+  'Thank you':'AK-01 · ACKNOWLEDGEMENT',
+  'Acknowledged':'AK-01 · ACKNOWLEDGEMENT',
+  'Understood':'AK-01 · ACKNOWLEDGEMENT',
+  'ICU reservation status changed':'CQ-01 · CAPACITY RE-QUERY',
+  'Note for your desk':'NT-01 · DESK NOTE'
+};
+function tplFor(text){
+  const k=Object.keys(MSG_TPL).find(p=>text.startsWith(p));
+  return k?MSG_TPL[k]:'MSG-00 · STRUCTURED MESSAGE';
+}
 function chat(who,text){
   const h=hosp(S.dest);
   text=text.replace('{CASE}','#'+S.case.id).replace('{ETA}',Math.max(1,Math.round(S.amb.leftSec/60))+' min');
-  S.chat.push({who,text,t:S.t,poc:who==='poc'?h.op:null,hosp:h});
+  S.chat.push({who,text,t:S.t,poc:who==='poc'?h.op:null,hosp:h,tpl:who==='bot'?tplFor(text):null});
   render.chat();
-  CloudAdapter.writeEvent('comms.message.sent',{caseId:S.case.id,channel:who==='bot'?'system_bot':'hospital_poc',hospitalId:h.id});
+  CloudAdapter.writeEvent('comms.message.sent',{caseId:S.case.id,
+    channel:who==='bot'?'system_desk_template':who==='crew'?'ambulance_crew':'hospital_poc',
+    template:who==='bot'?tplFor(text).split(' · ')[0]:null,hospitalId:h.id});
 }
 function setStatus(st){
   const h=hosp(S.dest);if(!h)return;
@@ -1636,7 +1862,20 @@ function applyStep(s){
   switch(type){
     case 'log': log(a); CloudAdapter.writeEvent('ambulance.dispatched',{caseId:S.case.id,ambulanceId:S.amb.id}); break;
     case 'decide': decide(); break;
-    case 'chat': chat(a,b!==undefined?b:''); break;
+    case 'chat': {
+      /* Before the desk's first outbound message, show the crew intake that populates it. */
+      if(a==='bot'&&!S.crewSent){
+        S.crewSent=true;
+        const v=S.vitals||{};
+        chat('crew','On-scene assessment transmitted. '+S.pt.pres+', severity '+S.pt.sev+
+          '. GCS '+v.gcs+', BP '+v.bp+', SpO₂ '+v.spo2+'%, pulse '+v.hr+
+          '. Requesting '+S.pt.bed+' bed with '+S.pt.spec+' cover. Ventilator: '+S.pt.vent.toLowerCase()+'.');
+        CloudAdapter.writeEvent('crew.assessment.submitted',{caseId:S.case.id,gcs:v.gcs,spo2:v.spo2,
+          bed:S.pt.bed,speciality:S.pt.spec,vent:S.pt.vent});
+        log('Crew assessment received from '+S.case.amb+' — template fields populated');
+        render.crewFeed();
+      }
+      chat(a,b!==undefined?b:''); break;}
     case 'status': setStatus(a); break;
     case 'ins': insurance(a); break;
     case 'decline': {
@@ -1761,7 +2000,7 @@ function arrive(){
 
 /* ================= 10. RENDER ================= */
 const render={
-  all(){this.strip();this.hosp();this.score();this.trans();this.ins();this.tickUI();this.dq();this.cloud();},
+  all(){this.strip();this.hosp();this.score();this.trans();this.ins();this.tickUI();this.dq();this.cloud();this.crewFeed();},
   tickUI(){
     $('#clk').textContent=clk(S.t);
     const h=S.dest?hosp(S.dest):null;
@@ -1823,15 +2062,33 @@ const render={
   chat(){
     const box=$('#chat');
     box.innerHTML=S.chat.map(m=>{
-      const nm=m.who==='bot'?'SETU automated desk':m.poc.n+' · '+m.hosp.name;
-      const av=m.who==='bot'?'<div class="av bot">AI</div>':`<div class="av">${m.poc.i}</div>`;
-      return `<div class="who">${av}<span class="nm">${nm}</span><span class="mt">${clk(m.t)}</span></div>
-        <div class="bub ${m.who==='bot'?'bot':''}">${m.text}</div>`;}).join('');
+      const nm=m.who==='bot'?'SETU Coordination Desk'
+             :m.who==='crew'?(S.crew?S.crew.n:'Paramedic')+' · '+S.case.amb
+             :m.poc.n+' · '+m.hosp.name;
+      const av=m.who==='bot'?'<div class="av bot">SYS</div>'
+             :m.who==='crew'?'<div class="av crew">AMB</div>'
+             :`<div class="av">${m.poc.i}</div>`;
+      const tpl=m.tpl?`<span class="tplid">${m.tpl}</span>`:'';
+      return `<div class="who">${av}<span class="nm">${nm}</span>${tpl}<span class="mt">${clk(m.t)}</span></div>
+        <div class="bub ${m.who==='bot'?'bot':m.who==='crew'?'crew':''}">${m.text}</div>`;}).join('');
     box.scrollTop=box.scrollHeight;
     const h=S.dest?hosp(S.dest):null;
     if(h){$('#pocBar').innerHTML=`<span class="nm">${h.op.n}</span><span style="color:var(--ink3);font-size:11.5px">${h.op.desk} · ${h.name}</span>
       <span class="ph">${h.op.ph}</span><span class="demo">synthetic</span>`;
       $('#chatTag').textContent=h.id;}
+  },
+  crewFeed(){
+    const box=$('#crewFeed');if(!box)return;
+    const p=S.pt,v=S.vitals||{};
+    const rows=[
+      ['PRESENTATION',p.pres],['SEVERITY',p.sev],
+      ['BED REQUIRED',p.bed],['SPECIALITY',p.spec],['VENTILATOR',p.vent],
+      ['GCS',v.gcs!=null?v.gcs:'—'],['BP',v.bp||'—'],['SpO₂',v.spo2!=null?v.spo2+'%':'—'],['PULSE',v.hr!=null?v.hr+' bpm':'—'],
+      ['SCHEME / POLICY',p.ins]
+    ];
+    box.innerHTML=rows.map(([k,val])=>`<div class="cf-row"><u>${k}</u><b>${val}</b></div>`).join('');
+    const tag=$('#crewTag');
+    if(tag)tag.textContent=S.crewSent?'TRANSMITTED':'CAPTURING';
   },
   ins(){
     const st=S.ins.stage;
@@ -1900,8 +2157,13 @@ function loadScenario(id){
   S=newState(sc);
   buildMap();
   S.chat=[];S.logs=[];S.events=[];S.trans=[];
+  /* Paramedic on scene: the crew captures a structured assessment that populates every outbound
+     template. Nothing is free-typed and nothing is generated — the desk only fills these fields. */
+  S.crew=CREW[Math.floor(Math.random()*CREW.length)];
+  S.vitals=vitalsFor(sc.pt);
+  S.crewSent=false;
   $('#alertSlot').innerHTML='';
-  $('#chat').innerHTML='<div class="empty" style="padding:8px 0">The automated desk opens contact once a destination is selected.</div>';
+  $('#chat').innerHTML='<div class="empty" style="padding:8px 0">The coordination desk opens contact once a destination is selected.</div>';
   $('#pocBar').innerHTML='<span class="nm">No active contact</span>';
   $('#scoreBox').innerHTML='<div class="empty">Start the case to see the scoring breakdown.</div>';
   $('#insTag').textContent='IDLE';
@@ -1910,6 +2172,19 @@ function loadScenario(id){
   $('#runBtn').disabled=false;$('#runBtn').textContent='Start case';
   log('Case '+S.case.id+' created — '+sc.n.split('— ')[1]);
   CloudAdapter.writeEvent('case.created',{caseId:S.case.id,severity:sc.pt.sev,bed:sc.pt.bed,speciality:sc.pt.spec});
+}
+
+const CREW=[{n:'Sr. Paramedic R. Kale',i:'RK'},{n:'Paramedic A. Dsouza',i:'AD'},
+            {n:'Sr. Paramedic M. Yadav',i:'MY'},{n:'Paramedic S. Iqbal',i:'SI'}];
+/* Vitals consistent with the stated presentation — illustrative, drawn from the case, not measured. */
+function vitalsFor(p){
+  const crit=p.sev==='Critical';
+  const gcsMap={'Head injury, GCS 11':11,'Acute stroke, onset 50 min':13,'Cardiac arrest, ROSC achieved':7};
+  const gcs=gcsMap[p.pres]!=null?gcsMap[p.pres]:(crit?clamp(Math.round(13-Math.random()*3),9,15):15);
+  return {gcs,
+    bp:crit?(90+Math.round(Math.random()*25))+'/'+(55+Math.round(Math.random()*15)):(115+Math.round(Math.random()*15))+'/'+(72+Math.round(Math.random()*10)),
+    spo2:crit?clamp(Math.round(92-Math.random()*6),82,97):clamp(Math.round(97-Math.random()*2),94,99),
+    hr:crit?clamp(Math.round(108+Math.random()*26),90,150):clamp(Math.round(84+Math.random()*12),70,105)};
 }
 $('#scenario').innerHTML=SC.map(s=>`<option value="${s.id}">${s.n}</option>`).join('');
 $('#scenario').onchange=e=>loadScenario(e.target.value);
